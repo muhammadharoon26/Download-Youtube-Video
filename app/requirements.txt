@@ -1,0 +1,5 @@
+ffmpeg==1.4
+ffmpeg-python==0.2.0
+fastapi==0.109.1
+uvicorn==0.21.1
+yt-dlp==2024.5.27
