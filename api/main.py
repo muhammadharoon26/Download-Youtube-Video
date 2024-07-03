@@ -89,7 +89,7 @@ def get_download_links(video_url: str):
         'format': 'bestvideo+bestaudio/best',
         'simulate': True,
         'get_url': True,
-        # 'nocache': True  # Disable caching
+        'nocache': True,  # Disable caching
     }
     
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
@@ -145,7 +145,6 @@ def process_video(video, index=None):
         result[audio_key] = best_audio_link
     
     return result
-
 
 app = FastAPI()
 
