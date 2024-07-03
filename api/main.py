@@ -6,7 +6,7 @@ def get_download_links(video_url: str):
     download_links = []
     
     ydl_opts = {
-        'quiet': True,
+        'quiet': False,
         'format': 'bestvideo+bestaudio/best',
         'simulate': True,
         'get_url': True,
