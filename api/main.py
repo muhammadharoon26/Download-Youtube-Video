@@ -13,26 +13,23 @@ def get_download_links(video_url: str):
 
     video_links = {}
     audio_links = {}
-    thumbnails = {}
+    thumbnail_url = ""
 
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         result = ydl.extract_info(video_url, download=False)
-
-        if 'entries' in result:
-            # URL is a playlist
-            for index, entry in enumerate(result['entries'], start=1):
-                v_links, a_links, thumbnail_url = process_video(entry, index)
+        if 'entries' in result:  # Playlist
+            for index, entry in enumerate(result['entries']):
+                v_links, a_links, thumb = process_video(entry, index)
                 video_links.update(v_links)
                 audio_links.update(a_links)
-                thumbnails[f"Thumbnail_Video {index}"] = thumbnail_url
-        else:
-            # Single video
+                if not thumbnail_url and thumb:
+                    thumbnail_url = thumb
+        else:  # Single video
             v_links, a_links, thumbnail_url = process_video(result)
             video_links.update(v_links)
             audio_links.update(a_links)
-            thumbnails["Thumbnail"] = thumbnail_url
 
-    return video_links, audio_links, thumbnails
+    return video_links, audio_links, thumbnail_url
 
 def process_video(video, index=None):
     formats = video.get('formats', [])
@@ -64,5 +61,5 @@ def process_video(video, index=None):
 
 @app.get("/download_links")
 async def download_links(video_url: str = Query(..., description="YouTube video or playlist URL")):
-    video_links, audio_links, thumbnails = get_download_links(video_url)
-    return {"Video Links": video_links, "Audio Links": audio_links, "Thumbnails": thumbnails}
+    video_links, audio_links, thumbnail = get_download_links(video_url)
+    return {"Video Links": video_links, "Audio Links": audio_links, "Thumbnail": thumbnail}
