@@ -4,13 +4,21 @@ import yt_dlp
 app = FastAPI()
 
 def get_download_links(video_url: str):
+    # ydl_opts = {
+    #     'quiet': True,
+    #     'format': 'bestvideo+bestaudio/best',
+    #     'simulate': True,
+    #     'get_url': True,
+    # }
     ydl_opts = {
         'quiet': True,
         'format': 'bestvideo+bestaudio/best',
         'simulate': True,
         'get_url': True,
+        'no_cache_dir': True,  # Disable caching
+        'outtmpl': '-',  # Output to stdout
+        'cachedir': False,  # Disable cache directory
     }
-
     video_links = {}
     audio_links = {}
     thumbnail_url = ""
@@ -60,7 +68,15 @@ def process_video(video, index=None):
 
     return video_links, audio_links
 
+# @app.get("/download_links")
+# async def download_links(video_url: str = Query(..., description="YouTube video or playlist URL")):
+#     video_links, audio_links, thumbnail_url = get_download_links(video_url)
+#     return {"Video Links": video_links, "Audio Links": audio_links, "Thumbnail": thumbnail_url}
+
 @app.get("/download_links")
 async def download_links(video_url: str = Query(..., description="YouTube video or playlist URL")):
-    video_links, audio_links, thumbnail_url = get_download_links(video_url)
-    return {"Video Links": video_links, "Audio Links": audio_links, "Thumbnail": thumbnail_url}
+    try:
+        video_links, audio_links, thumbnail_url = get_download_links(video_url)
+        return {"Video Links": video_links, "Audio Links": audio_links, "Thumbnail": thumbnail_url}
+    except Exception as e:
+        return {"error": str(e)}, 500
