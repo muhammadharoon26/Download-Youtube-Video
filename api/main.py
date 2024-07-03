@@ -90,20 +90,27 @@ def get_download_links(video_url: str):
         'simulate': True,
         'get_url': True,
         'nocache': True,  # Disable caching
+        'cachedir': False,  # Ensure no cache directory is used
     }
     
-    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-        result = ydl.extract_info(video_url, download=False)
-        
-        if 'entries' in result:
-            # This indicates that the URL is a playlist
-            index = 0
-            for entry in result['entries']:
-                index += 1
-                download_links.append(process_video(entry, index))
-        else:
-            # Single video
-            download_links.append(process_video(result))
+    try:
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            result = ydl.extract_info(video_url, download=False)
+            
+            if 'entries' in result:
+                # This indicates that the URL is a playlist
+                index = 0
+                for entry in result['entries']:
+                    index += 1
+                    download_links.append(process_video(entry, index))
+            else:
+                # Single video
+                download_links.append(process_video(result))
+    
+    except yt_dlp.utils.DownloadError as e:
+        return {"error": str(e)}
+    except Exception as e:
+        return {"error": f"An unexpected error occurred: {str(e)}"}
     
     return download_links
 
