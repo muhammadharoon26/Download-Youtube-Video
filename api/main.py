@@ -63,3 +63,7 @@ def process_video(video, index=None):
 async def download_links(video_url: str = Query(..., description="YouTube video or playlist URL")):
     video_links, audio_links, thumbnail = get_download_links(video_url)
     return {"Video Links": video_links, "Audio Links": audio_links, "Thumbnail": thumbnail}
+
+@app.get("/health")
+async def health_check():
+    return JSONResponse(content={"status": "healthy"}, status_code=200)
