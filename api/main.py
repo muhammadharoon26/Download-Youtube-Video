@@ -52,7 +52,7 @@ def process_video(video, index=None):
                 video_links[key_prefix] = f['url']
         elif f.get('acodec') != 'none' and f.get('vcodec') == 'none' and f.get('protocol') == 'https':
             bitrate = round(f.get('tbr', 0))
-            audio_key = f"Audio_{bitrate}kbps" if index is None else f"Audio_{bitrate}kbps_{index}"
+            audio_key = f"{bitrate}kbps" if index is None else f"{bitrate}kbps_{index}"
             if bitrate > 0:
                 audio_links[audio_key] = f['url']
 
@@ -67,4 +67,4 @@ async def download_links(video_url: str = Query(..., description="YouTube video 
 
 @app.get("/health")
 async def health_check():
-    return JSONResponse(content={"status": "healthy hai Mashallah !"}, status_code=200)
+    return JSONResponse(content={"status": "healthy"}, status_code=200)
