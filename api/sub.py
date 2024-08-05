@@ -1,8 +1,41 @@
 import yt_dlp
-from fastapi import FastAPI, Query
+from fastapi import FastAPI, Query, HTTPException
 from fastapi.responses import JSONResponse
 
 app = FastAPI()
+
+def extract_video_info(url: str):
+    ydl_opts = {}
+    
+    try:
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            info = ydl.extract_info(url, download=False)
+            
+            video_info = {
+                "id": info.get("id", ""),
+                "title": info.get("title", ""),
+                "lengthSeconds": str(info.get("duration", "")),
+                "channelTitle": info.get("channel", ""),
+                "channelId": info.get("channel_id", ""),
+                "description": info.get("description", ""),
+                "allowRatings": info.get("allow_ratings", None),
+                "viewCount": str(info.get("view_count", "")),
+                "isPrivate": info.get("is_private", None),
+                "isUnpluggedCorpus": info.get("is_unplugged_corpus", None),
+                "isLiveContent": info.get("is_live", None),
+                "isCrawlable": info.get("crawlable", None),
+                "isFamilySafe": info.get("age_limit", 0) == 0,
+                "availableCountries": info.get("availability", []),
+                "isUnlisted": info.get("visibility", "") == "unlisted",
+                "category": info.get("categories", [""])[0] if info.get("categories") else "",
+                "publishDate": info.get("publish_date", ""),
+                "publishedAt": info.get("upload_date", ""),
+                "uploadDate": info.get("upload_date", "")
+            }
+            
+            return video_info
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
 
 def get_subs_structure(url):
     sub_options = {
@@ -104,6 +137,11 @@ def process_video(video, index=None):
 async def download_links(video_url: str = Query(..., description="YouTube video or playlist URL")):
     video_links, audio_links, subs, auto_subs, thumbnail = get_download_links(video_url)
     return {"video_links": video_links, "audio_links": audio_links, "subs": subs, "auto_subs": auto_subs, "thumbnail": thumbnail}
+
+@app.get("/extract_video_info")
+def get_video_info(url: str = Query(..., description="The YouTube video URL")):
+    video_info = extract_video_info(url)
+    return video_info
 
 @app.get("/health")
 async def health_check():
