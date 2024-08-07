@@ -1,8 +1,7 @@
 {
     "functions": {
         "api/main.py": {
-            "maxDuration": 60,
-            "runtime": "python@3.9"
+            "maxDuration": 60
         }
     },
     "routes": [
