@@ -9,7 +9,7 @@
     uvicorn
     ffmpeg
     ffmpeg-python
-    yt-dlp==latest
+    yt-dlp==2024.8.6
     Flask==3.0.3
 
    [requires]
