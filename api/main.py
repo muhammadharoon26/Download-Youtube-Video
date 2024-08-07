@@ -10,6 +10,7 @@ def get_download_links(video_url: str):
         'format': 'bestvideo+bestaudio/best',
         'simulate': True,
         'get_url': True,
+        'verbose': True
     }
 
     video_links = {}
