@@ -1,16 +1,17 @@
 [[source]]
-   url = "https://pypi.org/simple"
-   verify_ssl = true
-   name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
 
-   [packages]
-   # Add your dependencies here
-    fastapi
-    uvicorn
-    ffmpeg
-    ffmpeg-python
-    yt-dlp==2024.8.6
-    Flask==3.0.3
+[packages]
+fastapi = "*"
+uvicorn = "*"
+ffmpeg = "*"
+ffmpeg-python = "*"
+yt-dlp = "==2024.8.6"
+flask = "==3.0.3"
 
-   [requires]
-   python_version = "3.9"
+[dev-packages]
+
+[requires]
+python_version = "3.9"
