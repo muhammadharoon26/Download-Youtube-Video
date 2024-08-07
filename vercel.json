@@ -1,8 +1,13 @@
 {
+    "builds": [
+        {
+            "src": "api/main.py",
+            "use": "@vercel/python@3.1.0"
+        }
+    ],
     "functions": {
         "api/main.py": {
-            "maxDuration": 60,
-            "runtime": "python@3.9"
+            "maxDuration": 60
         }
     },
     "routes": [
