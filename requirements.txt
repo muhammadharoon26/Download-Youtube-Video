@@ -1,0 +1,6 @@
+fastapi
+uvicorn
+ffmpeg
+ffmpeg-python
+yt-dlp==2024.8.6
+Flask==3.0.3
