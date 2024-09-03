@@ -83,15 +83,14 @@ import yt_dlp
 
 app = FastAPI()
 
+
 def get_download_links(video_url: str):
     ydl_opts = {
-        'quiet': True,
+        'quiet': False,
         'format': 'bestvideo+bestaudio/best',
         'simulate': True,
         'get_url': True,
-        'verbose': True,
-        # 'user_agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36',
-        # 'nocheckcertificate': True
+        'verbose': True
     }
 
     video_links = {}

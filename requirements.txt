@@ -2,4 +2,4 @@ fastapi
 uvicorn
 ffmpeg
 ffmpeg-python
-yt-dlp==2024.8.6
+yt-dlp
