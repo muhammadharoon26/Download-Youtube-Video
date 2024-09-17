@@ -3,3 +3,4 @@ uvicorn
 ffmpeg
 ffmpeg-python
 yt-dlp
+pytubefix
